@@ -11,6 +11,7 @@ class DBClient {
       try {
         await this.client.connect();
         this.db = this.client.db(DB_DATABASE);
+        await this.db.collection('users').createIndex({ email: 1 }, { unique: true });
         return true;
       } catch (error) {
         console.log(error);
