@@ -7,17 +7,17 @@ class DBClient {
     const DB_DATABASE = process.env.DB_DATABASE || 'files_manager';
     const CONN = `mongodb://${DB_HOST}:${DB_PORT}`;
     this.client = new MongoClient(CONN);
-    this.isconn = async () => {
+    this.isconn = false;
+    (async () => {
       try {
         await this.client.connect();
+        this.isconn = true;
         this.db = this.client.db(DB_DATABASE);
         await this.db.collection('users').createIndex({ email: 1 }, { unique: true });
-        return true;
       } catch (error) {
         console.log(error);
-        return false;
       }
-    };
+    })();
   }
 
   isAlive() {
